@@ -68,16 +68,18 @@ composer require jalle19/laravel-deferred-event-dispatcher
 2. Swap the default event dispatcher for this one:
 
 ```php
-$app->singleton(\App\DelayedOptionalEventDispatcher::class, function () use ($app) {
-    return new \App\DelayedOptionalEventDispatcher($app, [
+// The event dispatcher must be a singleton
+$app->singleton(\Jalle19\Laravel\Events\DeferredEventDispatcher::class, function () use ($app) {
+    return new \Jalle19\Laravel\Events\DeferredEventDispatcher($app, [
         // Cache events
         Illuminate\Cache\Events\CacheHit::class,
         Illuminate\Cache\Events\CacheMissed::class,
     ]);
 });
 
-$app->alias(App\DelayedOptionalEventDispatcher::class, 'events');
-$app->alias(App\DelayedOptionalEventDispatcher::class, Illuminate\Contracts\Events\Dispatcher::class);
+// Swap the default implementation for this one. Some classes type-hint the interface, others simply use "events"
+$app->alias(\Jalle19\Laravel\Events\DeferredEventDispatcher::class, 'events');
+$app->alias(\Jalle19\Laravel\Events\DeferredEventDispatcher::class, Illuminate\Contracts\Events\Dispatcher::class);
 ```
 
 In this example we've decided to defer resolving of event handlers whenever a cache event is dispatched.
