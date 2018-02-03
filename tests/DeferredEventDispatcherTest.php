@@ -2,9 +2,7 @@
 
 namespace Jalle19\Laravel\Events\Tests;
 
-use Illuminate\Contracts\Container\Container;
 use Jalle19\Laravel\Events\DeferredEventDispatcher;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -20,7 +18,7 @@ class DeferredEventDispatcherTest extends TestCase
     public function testEventHandling()
     {
         // Create a dispatcher that ignores "baz" events and DummyEvents
-        $dispatcher = new DeferredEventDispatcher($this->getMockedContainer(), [
+        $dispatcher = new DeferredEventDispatcher(null, [
             'baz',
             DummyEvent::class,
         ]);
@@ -29,7 +27,9 @@ class DeferredEventDispatcherTest extends TestCase
         $this->assertCount(0, $dispatcher->getListeners('foo'));
 
         // Add a new listener, actual listeners should still be zero
-        $dispatcher->listen('foo', [$this, 'dummyHandler']);
+        $dispatcher->listen('foo', function () {
+            
+        });
         $this->assertCount(0, $dispatcher->getListeners('foo'));
 
         // Add an event subscriber, actual event listeners should still be zero
@@ -47,23 +47,6 @@ class DeferredEventDispatcherTest extends TestCase
 
         // Also ignored events should be registered now
         $this->assertCount(1, $dispatcher->getListeners('baz'));
-    }
-
-    /**
-     *
-     */
-    public function dummyHandler()
-    {
-
-    }
-
-    /**
-     * @return MockObject|Container
-     */
-    private function getMockedContainer()
-    {
-        return $this->getMockBuilder(Container::class)
-                    ->getMock();
     }
 }
 
