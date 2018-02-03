@@ -1,0 +1,33 @@
+{
+    "name": "jalle19/laravel-deferred-event-dispatcher",
+    "description": "A deferring event dispatcher for the Laravel and Lumen frameworks",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sam Stenvall",
+            "email": "sam.stenvall@digia.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "illuminate/contracts": "^5.4",
+        "illuminate/events": "^5.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jalle19\\Laravel\\Events\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Jalle19\\Laravel\\Events\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
